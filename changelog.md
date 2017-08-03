@@ -1,3 +1,6 @@
+# 2017-08-03 #
+* [web] move source code, binaries and changelog to github
+
 # 2017-02-17 #
 * [web] attach promoter positions file to results email
 * [web] remove absolute paths from log file
