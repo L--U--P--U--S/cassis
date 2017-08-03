@@ -23,7 +23,7 @@
 * fix bug which causes false reports of faulty promoters in cluster predictions
 * improve some regular expressions to avoid problems with meta-characters in gene names
 * drop support for AspGD, JGI, GFF, … annotation file formats (caused quite some trouble)
-* introduce []self-defined annotation file format](https://sbi.hki-jena.de/cassis/Help.php#Input)
+* introduce [self-defined annotation file format](https://sbi.hki-jena.de/cassis/Help.php#Input)
 
 # 2016-07-20 #
 * [web] improve handling of unusual file names
