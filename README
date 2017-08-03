@@ -1,0 +1,148 @@
+Copyright (C) 2015 Leibniz Institute for Natural  Product  Research  and
+Infection Biology -- Hans-Knoell-Institute (HKI).
+
+This program comes with ABSOLUTELY NO WARRANTY. This is  free  software,
+and you are welcome to redistribute it under certain conditions. See the
+file COPYING, which you should have received along  with  this  program,
+for details.
+
+      ###########################################################
+      # CASSIS - (C)luster (ASS)ignment by (I)slands of (S)ites #
+      ###########################################################
+
+CASSIS is a tool to precisely predict  secondary  metabolite  (SM)  gene
+clusters around a given anchor (or backbone) gene.  Genes  encoding  SMs
+tend to be clustered. Gene clusters are small groups of normally  up  to
+20 genes; tightly co-localized, co-regulated, and participating  in  the
+same metabolic pathway.  The  predictions  are  based  on  transcription
+factor binding sites  shared  by  promoter  sequences  of  the  putative
+cluster genes.
+
+
+usage: cassis <parameters>
+
+
+required parameters:
+
+   --annotation, -a <file>
+
+      Genome annotation file. A simple text file in tabular format  with
+      at least five columns. These are:
+
+      gene <string> | contig <string> |  start  position  <int>  |  stop
+      position <int> | strand <+ or->.
+
+      The column separator must be tab (\t). The annotation file must be
+      sorted ascending by contig, start and stop. Start  positions  must
+      be smaller than stop positions. Contig names have to coincide with
+      the genome sequence file.
+
+   --genome, -g <file>
+
+      Genomic sequence  file.  A  multiFASTA  file  containing  the  DNA
+      sequences of all contigs of the  species.  Contig  names  have  to
+      coincide with the annotation file.
+
+
+optional parameters:
+
+   --anchor, -b <ID>
+
+      Feature ID of the clusters anchor gene. The  ID  has  to  coincide
+      with the annotation file. This gene will be the starting point  of
+      the cluster prediction.
+
+   --cluster, -c <name>
+
+      Name of the gene cluster to predict. Creates a sub-directory  with
+      the given name to separate predictions for different clusters  but
+      same species (in the same working directory). Will be set  to  the
+      cluster's anchor gene ID, if ommitted.
+
+   --dir, -d <directory>
+
+      Working directory. All directories and files generated  by  CASSIS
+      will go in here. Choosing different directories for e.g. different
+      species might be a good idea.
+
+   --fimo, -f [<p-value cut-off>]
+
+      Enables the motif search with FIMO.  Setting  a  maximum  p-value,
+      which will restrict the number of binding sites found by FIMO,  is
+      optional. If no p-value cut-off is specied, the default  value  of
+      0.00006 will be used. To run the motiv search, the MEME suite must
+      be    installed    on    your     system.     See     http://meme-
+      suite.org/doc/download.html
+
+   --frequency, -fq <frequency cut-off between 0 and 100>
+
+      By default, CASSIS will skip the cluster prediction for a  certain
+      motif, if this motif results in a number of binding sites found in
+      more than 14 % of all promoters in the genome.  By  changing  this
+      paramater you may set a different frequency cut-off.
+
+   --gap-length, -gl <0-5>
+
+      Sets the maximum number of promoters  in  a  row  WITHOUT  binding
+      sites, which are allowed inside a cluster prediction. Allowed  are
+      0, 1, 2, 3, 4, and 5. The default value is 2. Only applies if  the
+      cluster prediction has been enabled (see parameter --prediction).
+
+   --help, -h
+
+      Show the help page, which you are currently reading.
+
+   --meme, -m [<e-value cut-off>]
+
+      Enables the motif prediction around the  anchor  gene  with  MEME.
+      Setting a maximum e-value for found motifs is optional. MEME  will
+      stop, if it reaches the e-value, regardless if any motif has  been
+      found or not. If no e-value  cut-off  is  specified,  the  default
+      value of 1.0e+005 will be used.  The  cut-off  -1  has  a  special
+      meaning: This means NO cut-off and MEME will  not  stop  until  it
+      finds at least one motif, regardless of its e-value.  To  run  the
+      motiv prediction, the MEME suite must be installed on your system.
+      See http://meme-suite.org/doc/download.html
+
+   --mismatches, -mm <allowed mismatches>
+
+      Setting a maximum number of allowed mismatches (0-3)  per  binding
+      site sequence is optional. The default is 0. See --sitar.
+
+   --num-cpus, -n <number>
+
+      Set number of CPUs (or CPU cores) to  use.  The  motif  prediction
+      (parameter --meme) and the motif search (parameter  --fimo)  steps
+      will then run with multiple forks in parallel.  CASSIS  uses  only
+      one CPU by default.
+
+   --prediction, -p
+
+      Enables the cluster prediction, including the motif prediction via
+      paramter --meme and the motif  search  via  parameter  --fimo.  By
+      default it's disabled.
+
+   --sitar, -s <file>
+
+      Alternative to MEME and FIMO: Enables the motif search with SiTaR.
+      You have to provide a file in (multi) FASTA  format  with  binding
+      site sequences of at least one transcription factor.
+
+   --verbose, -v
+
+      By default, only the most important information  is  printed.  Use
+      this parameter if you prefer a more verbose output.
+
+
+runtime (Intel Xeon, running at 2.7 GHz):
+
+   Using 2 CPUs (via --num-cpus), predicting  the  cluster  to  a  given
+   anchor gene takes about 40 min. Using 4 CPUs, it takes about 22  min.
+   And using 60 CPUs, about 3 min.
+
+
+command-line example:
+cassis --dir fungi/fumigatus/ --annotation fungi/fumigatus/A_fumigatus_Af293_version_s03-m04-r22_features.csv --genome fungi/fumigatus/A_fumigatus_Af293_version_s03-m04-r22_chromosomes.fasta --anchor Afu6g09660 --cluster Gliotoxin --meme 1.0e+005 --fimo 0.00006 -frequency 14 --prediction --gap-length 2 --num-cpus 2 --verbose
+
+
+Contact: ekaterina.shelest@hki-jena.de, thomas.wolf@hki-jena.de
