@@ -146,3 +146,5 @@ cassis --dir fungi/fumigatus/ --annotation fungi/fumigatus/A_fumigatus_Af293_ver
 
 
 Contact: ekaterina.shelest@hki-jena.de, thomas.wolf@hki-jena.de
+
+Cite: If you use CASSIS, please cite https://doi.org/10.1093/bioinformatics/btv713

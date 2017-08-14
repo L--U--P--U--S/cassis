@@ -38,6 +38,8 @@
 # Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
 #
 # Contact: ekaterina.shelest@hki-jena.de, thomas.wolf@hki-jena.de
+#
+# Cite: If you use CASSIS, please cite https://doi.org/10.1093/bioinformatics/btv713
 
 use 5.14.2;
 
@@ -123,7 +125,10 @@ sub usage
 	  . "command-line example:" . "\n"
 	  . "cassis.pl --dir fungi/fumigatus/ --annotation fungi/fumigatus/A_fumigatus_Af293_version_s03-m04-r22_features.csv --genome fungi/fumigatus/A_fumigatus_Af293_version_s03-m04-r22_chromosomes.fasta --anchor Afu6g09660 --cluster Gliotoxin --meme 1.0e+005 --fimo 0.00006 -frequency 14 --prediction --gap-length 2 --num-cpus 2 --verbose\n"
 	  . "\n\n"
-	  . "Contact: ekaterina.shelest\@hki-jena.de, thomas.wolf\@hki-jena.de";
+	  . "Contact: ekaterina.shelest\@hki-jena.de, thomas.wolf\@hki-jena.de"
+	  . "\n\n"
+	  . "Cite: If you use CASSIS, please cite https://doi.org/10.1093/bioinformatics/btv713";
+	  
 
 	# print README to file
 	open( my $readme, ">", "README" ) or die "Cannot write to file \"./README\".\n", $!;
