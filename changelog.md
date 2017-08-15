@@ -1,3 +1,6 @@
+# 2017-08-14 #
+* Add citing information to readme
+
 # 2017-08-03 #
 * [web] move source code, binaries and changelog to github
 
