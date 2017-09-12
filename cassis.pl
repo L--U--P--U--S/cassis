@@ -125,10 +125,8 @@ sub usage
 	  . "command-line example:" . "\n"
 	  . "cassis.pl --dir fungi/fumigatus/ --annotation fungi/fumigatus/A_fumigatus_Af293_version_s03-m04-r22_features.csv --genome fungi/fumigatus/A_fumigatus_Af293_version_s03-m04-r22_chromosomes.fasta --anchor Afu6g09660 --cluster Gliotoxin --meme 1.0e+005 --fimo 0.00006 -frequency 14 --prediction --gap-length 2 --num-cpus 2 --verbose\n"
 	  . "\n\n"
-	  . "Contact: ekaterina.shelest\@hki-jena.de, thomas.wolf\@hki-jena.de"
-	  . "\n\n"
+	  . "Contact: ekaterina.shelest\@hki-jena.de, thomas.wolf\@hki-jena.de" . "\n\n"
 	  . "Cite: If you use CASSIS, please cite https://doi.org/10.1093/bioinformatics/btv713";
-	  
 
 	# print README to file
 	open( my $readme, ">", "README" ) or die "Cannot write to file \"./README\".\n", $!;
@@ -536,8 +534,8 @@ while ( my $row = $csv->getline($annotation_io) )
 	my $first         = $row->[2];
 	my $last          = $row->[3];
 	my $strand        = $row->[4];    # W = +; C = -
-	
-	$strand =~ s/\r$//; # remove trailing carriage return (if present) --> necessary to correctly handle windows newline encoding "\r\n"
+
+	$strand =~ s/\r$//;               # remove trailing carriage return (if present) --> necessary to correctly handle windows newline encoding "\r\n"
 
 	die "[ERROR] Invalid whitespace in contig string \"$contig_number\".\nStopped" if ( index( $contig_number, " " ) != -1 );
 	die "[ERROR] No gene name in line \"@$row\".\nStopped"                         if ( !$ID );
@@ -545,10 +543,10 @@ while ( my $row = $csv->getline($annotation_io) )
 	die "[ERROR] No gene start position in line \"@$row\".\nStopped" if ( !$first and $first != 0 );    # 0 is false, but still a valid start pos
 	die "[ERROR] No gene stop position in line \"@$row\".\nStopped"  if ( !$last );
 	die "[ERROR] No strand information in line \"@$row\".\nStopped"  if ( !$strand );
-	die "[ERROR] Start position is not an positive integer in line \"@$row\".\nStopped" if ($first !~ /^\d+$/);
-	die "[ERROR] Stop position is not an positive integer in line \"@$row\".\nStopped" if ($last !~ /^\d+$/);
+	die "[ERROR] Start position is not an positive integer in line \"@$row\".\nStopped" if ( $first !~ /^\d+$/ );
+	die "[ERROR] Stop position is not an positive integer in line \"@$row\".\nStopped"  if ( $last !~ /^\d+$/ );
 	die "[ERROR] Start position identical to stop position in line \"@$row\".\nStopped" if ( $first == $last );
-	die "[ERROR] Start position AFTER stop position in line \"@$row\".\nStopped" if ( $first > $last and $strand eq "+" );
+	die "[ERROR] Start position AFTER stop position in line \"@$row\".\nStopped"        if ( $first > $last and $strand eq "+" );
 
 	( $first, $last ) = ( $last, $first ) if ( $first > $last );                                        # switch start/stop position
 
@@ -1230,7 +1228,7 @@ for ( 0 .. $#features )
 	{
 		my $promoter_length = $promoters[-1]{last} - $promoters[-1]{first} + 1;
 		my $promoter_sequence = substr( $$contig_sequence, $promoters[-1]{first} - 1, $promoter_length );
-		
+
 		my $min_promoter_length = 6;
 		my $max_promoter_length = ( $upstream_tss + $downstream_tss ) * 2 + 1;
 		my $invalid_promoter_sequence;

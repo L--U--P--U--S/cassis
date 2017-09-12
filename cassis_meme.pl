@@ -168,15 +168,15 @@ sub meme
 		my $minus    = $plus_minus[$_]{minus};
 		my $meme_dir = "$dir$cluster_name/meme/" . "+" . $plus . "_-" . $minus . "/";
 
-		$pm->start and next;                                                            # fork
-		if ( !$read_from_previous[$_] )                                                 # motif not predicted previously? --> run MEME
+		$pm->start and next;                   # fork
+		if ( !$read_from_previous[$_] )        # motif not predicted previously? --> run MEME
 		{
 			my @args = ( $meme_dir . "promoters.fasta", "-oc", $meme_dir, @$meme_parameters_ref );
 			system( "meme", @args );
 		}
-		$pm->finish;                                                                    # exit child process
+		$pm->finish;                           # exit child process
 	}
-	$pm->wait_all_children;                                                             # wait for all child processes to finish
+	$pm->wait_all_children;                    # wait for all child processes to finish
 	say "\n" if ($verbose);
 
 	# STEP 4: analyse MEME ouput
