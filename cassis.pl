@@ -1461,7 +1461,11 @@ sub fimo
 		if ( !( -d $fimo_dir and -s $fimo_dir . "fimo.txt" ) )    # motif not searched previously? --> run FIMO
 		{
 			my @args = (
-				"-verbosity", 1, "-motif", 1, "-thresh", $fimo, "-oc", $fimo_dir, "$dir$cluster_name/meme/" . $plus . "_" . $minus . "/meme.html",
+				# "-verbosity", 1, "-motif", 1, "-thresh", $fimo, "-oc", $fimo_dir, "$dir$cluster_name/meme/" . $plus . "_" . $minus . "/meme.html",
+				# "-motif 1" is not recgonised anymore
+				# have to provide "-motif <id>", like YTCGCTYYCCGA, in never FIMO versions
+				# --> omit this arg, because our MEME output contains only one motif, anyway
+				"-verbosity", 1, "-thresh", $fimo, "-oc", $fimo_dir, "$dir$cluster_name/meme/" . $plus . "_" . $minus . "/meme.html",
 				$promoter_sequences_file
 			);
 			system( "fimo", @args );
@@ -1514,17 +1518,45 @@ for ( @{$motifs} )
 	# open file with binding site positions
 	open( my $bs_io, "<", $bs_file ) or die "Cannot read from binding sites file \"$bs_file\".\n", $!;
 
+	# check version of binding sites file
+	my $header = <$bs_io>;
+
+	my $newer_fimo_version;
+	if ( index( $header, "# motif_id" ) == 0 )
+	{
+		# new header (v4.11.4 and newer):
+		# "# motif_id	motif_alt_id	sequence_name	start	stop	strand	score	p-value	q-value	matched_sequence"
+		$newer_fimo_version = 1;
+	}
+	elsif ( index( $header, "#pattern name" ) == 0 )
+	{
+		# old header:
+		# "#pattern name	sequence name	start	stop	strand	score	p-value	q-value	matched sequence"
+		$newer_fimo_version = 0;
+	}
+	else
+	{
+		die "[ERROR] Unrecognized format of binding sites file \"$bs_file\".\nStopped";
+	}
+
 	# extract locus names
 	my @promoters_with_bs;
-	<$bs_io>;    # skip first line (comment, header)
+	# don't need to skip, because of header check above
+	# <$bs_io>;    # skip first line (comment, header)
 	while ( my $row = $csv->getline($bs_io) )
 	{
 		# FIMO bs file contains results for only one motif
 		if ($fimo)
 		{
 			# save promoter ID ("sequence name") and FIMO p-value, also crop "__x_bp__contig_x" part
-			push( @promoters_with_bs, { ID => substr( $row->[1], 0, index( $row->[1], "__" ) ), score => $row->[6] } );
-
+			if ($newer_fimo_version)
+			{
+				push( @promoters_with_bs, { ID => substr( $row->[2], 0, index( $row->[2], "__" ) ), score => $row->[7] } );
+			}
+			else
+			{
+				push( @promoters_with_bs, { ID => substr( $row->[1], 0, index( $row->[1], "__" ) ), score => $row->[6] } );
+			}
 		}
 		# SiTaR bs file contains mixed results for all motifs
 		elsif ( $sitar and $row->[1] eq $_->{motif} )
