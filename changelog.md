@@ -1,3 +1,7 @@
+# 2017-09-12 #
+* Workaround for bug in MEME's XML output, introduced in MEME v4.11.x
+* Add support for FIMO v4.11.4 and newer
+
 # 2017-08-14 #
 * Add citing information to readme
 
