@@ -201,8 +201,36 @@ sub meme
 		my @sequences;
 		my $check_result;
 
+		# fix MEME v4.12.0 XML error
+		# TODO this code becomes obsolete, if the MEME devs fix their XML
+		# https://groups.google.com/forum/#!topic/meme-suite/7xdY8GDovkQ
+		# --> will be fixed in first patch for 4.12.0
+		open( my $broken_xml, "<", $meme_xml_file );
+		my @lines = <$broken_xml>;
+		close $broken_xml;
+
+		for (@lines)
+		{
+			# XML file already fixed --> skip
+			last if ( index( $_, "<!-- <!ELEMENT maxsites (#PCDATA)*> -->" ) == 0 );
+
+			# comment first occurence of maxsites
+			# it occurs twice in v4.12.0
+			# --> will result in an error while reading with XML::LibXML->new()->load_xml()
+			if ( index( $_, "<!ELEMENT maxsites (#PCDATA)*>" ) == 0 )
+			{
+				$_ = "<!-- <!ELEMENT maxsites (#PCDATA)*> -->\n";
+				last;
+			}
+		}
+
+		open( my $fixed_xml, ">", $meme_xml_file );
+		print $fixed_xml @lines;
+		close $fixed_xml;
+
 		# load MEME xml output file
 		my $xml = XML::LibXML->new()->load_xml( location => $meme_xml_file );
+
 		my $stopping_reason = $xml->findnodes('//model/reason_for_stopping')->to_literal();
 
 		# NO motif found for given e-value cutoff :(
