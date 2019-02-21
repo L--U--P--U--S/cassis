@@ -1457,9 +1457,11 @@ sub fimo
 
 		# check if fimo output was already present, at least once
 		$read_from_previous = 1 if ( !$read_from_previous and -d $fimo_dir and -s $fimo_dir . "fimo.txt" );
+        # TODO fimo.tsv if meme suite >= 5.0.0
 
 		$pm->start and next;                       # fork
 		if ( !( -d $fimo_dir and -s $fimo_dir . "fimo.txt" ) )    # motif not searched previously? --> run FIMO
+        # TODO fimo.tsv if meme suite >= 5.0.0
 		{
 			my @args = (
 				# "-verbosity", 1, "-motif", 1, "-thresh", $fimo, "-oc", $fimo_dir, "$dir$cluster_name/meme/" . $plus . "_" . $minus . "/meme.html",
@@ -1513,7 +1515,7 @@ for ( @{$motifs} )
 {
 	printf( "%7s   ", $_->{motif} ) if $verbose;
 
-	$bs_file = "$dir$cluster_name/fimo/$_->{motif}/fimo.txt" if $fimo;
+	$bs_file = "$dir$cluster_name/fimo/$_->{motif}/fimo.txt" if $fimo; # TODO fimo.tsv if meme suite >= 5.0.0
 	$bs_file = "$dir$cluster_name/sitar/sitar.csv"           if $sitar;
 
 	# open file with binding site positions
