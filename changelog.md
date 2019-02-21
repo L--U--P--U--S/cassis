@@ -1,3 +1,6 @@
+# 2018-06-14 #
+* [web] add academic title for Thomas Wolf and Neetika Nath
+
 # 2017-09-12 #
 * Workaround for bug in MEME's XML output, introduced in MEME v4.11.x
 * Add support for FIMO v4.11.4 and newer
