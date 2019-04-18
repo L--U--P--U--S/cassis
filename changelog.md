@@ -1,3 +1,7 @@
+# 2019-03-08 #
+* [web] move CASSIS to a dedicated web server
+* [web] update MEME to version 4.12.0  (web version still used v4.9.0)
+
 # 2018-06-14 #
 * [web] add academic title for Thomas Wolf and Neetika Nath
 
