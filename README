@@ -19,7 +19,7 @@ factor binding sites  shared  by  promoter  sequences  of  the  putative
 cluster genes.
 
 
-usage: cassis <parameters>
+usage: cassis.pl <parameters>
 
 
 required parameters:
@@ -142,9 +142,9 @@ runtime (Intel Xeon, running at 2.7 GHz):
 
 
 command-line example:
-cassis --dir fungi/fumigatus/ --annotation fungi/fumigatus/A_fumigatus_Af293_version_s03-m04-r22_features.csv --genome fungi/fumigatus/A_fumigatus_Af293_version_s03-m04-r22_chromosomes.fasta --anchor Afu6g09660 --cluster Gliotoxin --meme 1.0e+005 --fimo 0.00006 -frequency 14 --prediction --gap-length 2 --num-cpus 2 --verbose
+cassis.pl --dir fungi/fumigatus/ --annotation fungi/fumigatus/A_fumigatus_Af293_version_s03-m04-r22_features.csv --genome fungi/fumigatus/A_fumigatus_Af293_version_s03-m04-r22_chromosomes.fasta --anchor Afu6g09660 --cluster Gliotoxin --meme 1.0e+005 --fimo 0.00006 -frequency 14 --prediction --gap-length 2 --num-cpus 2 --verbose
 
 
-Contact: ekaterina.shelest@hki-jena.de, thomas.wolf@hki-jena.de
+Contact: gianni.panagiotou@leibniz-hki.de, thomas.wolf@leibniz-hki.de
 
 Cite: If you use CASSIS, please cite https://doi.org/10.1093/bioinformatics/btv713
